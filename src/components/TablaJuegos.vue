@@ -2,41 +2,38 @@
   <div>
     <table class="table">
       <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
+        <tr class="text-center">
+          <th scope="col">Código</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Precio</th>
         </tr>
       </thead>
 
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+      <tbody v-if="juegosFiltrados && juegosFiltrados.length === 0">
+        <tr class="text-center">
+          <td colspan="4" class="py-5 display-6">No hay stock de juegos</td>
         </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
+      </tbody>
+
+      <tbody v-else>
+        <tr
+          class="text-center"
+          v-for="juego in juegosFiltrados"
+          :key="juego.codigo"
+        >
+          <td>{{ juego.codigo }}</td>
+          <td>{{ juego.nombre }}</td>
+          <td>{{ juego.stock }}</td>
+          <td>{{ juego.precio }}</td>
         </tr>
       </tbody>
     </table>
-    <h2 v-for="(juego, i) in juegosConStock" :key="i">
-      {{ juego.nombre }}
-    </h2>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "TablaJuegos",
   props: {
@@ -54,6 +51,16 @@ export default {
 
       return filtered;
     },
+    juegosFiltrados() {
+      const juegos = this.juegosConStock;
+      const filtroVuex = this.filtroCodigo;
+      if (filtroVuex === "") return juegos;
+
+      const filtered = juegos.filter((fil) => fil.codigo === filtroVuex);
+      if (!filtered) return [];
+      return filtered;
+    },
+    ...mapState(["filtroCodigo"]),
   },
 };
 </script>

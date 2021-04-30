@@ -1,7 +1,23 @@
 <template>
   <div>
-    <h1 class="text-center my-5">Listado de Juegos con stock</h1>
     <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h1 class="display-3 my-5">Busqueda de Juegos</h1>
+          <h2 class="mb-5">Cantidad de Juegos Totales: {{ cantidadJuegos }}</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 ms-auto">
+          <label class="form-label">Filtro</label>
+          <input
+            type="text"
+            class="form-control"
+            v-model="filtro"
+            @keyup.enter="filtrar"
+          />
+        </div>
+      </div>
       <div class="row">
         <div class="col-12" v-if="juegos">
           <TablaJuegos :productos="juegos" />
@@ -16,15 +32,27 @@
 
 <script>
 import TablaJuegos from "@/components/TablaJuegos.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "Busquedas",
   components: {
     TablaJuegos,
   },
+  data() {
+    return {
+      filtro: "",
+    };
+  },
   computed: {
     ...mapState(["juegos"]),
+    ...mapGetters(["cantidadJuegos"]),
+  },
+  methods: {
+    ...mapMutations(["añadirPalabra"]),
+    filtrar() {
+      this.añadirPalabra(this.filtro);
+    },
   },
 };
 </script>
