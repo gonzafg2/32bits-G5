@@ -34,6 +34,7 @@
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   name: "TablaJuegos",
   props: {
@@ -56,7 +57,7 @@ export default {
       const filtroVuex = this.filtroCodigo;
       if (filtroVuex === "") return juegos;
 
-      const filtered = juegos.filter((fil) => fil.codigo === filtroVuex);
+      const filtered = juegos.filter((fil) => fil.codigo.includes(filtroVuex));
       if (!filtered) return [];
       return filtered;
     },

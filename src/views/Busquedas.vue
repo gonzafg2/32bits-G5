@@ -10,12 +10,7 @@
       <div class="row">
         <div class="col-4 ms-auto">
           <label class="form-label">Filtro</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="filtro"
-            @keyup.enter="filtrar"
-          />
+          <input type="text" class="form-control" v-model="filtro" />
         </div>
       </div>
       <div class="row">
@@ -41,18 +36,23 @@ export default {
   },
   data() {
     return {
-      filtro: "",
+      // filtro: "",
     };
   },
   computed: {
-    ...mapState(["juegos"]),
+    ...mapState(["juegos", "filtroCodigo"]),
     ...mapGetters(["cantidadJuegos"]),
+    filtro: {
+      get: function () {
+        return this.filtroCodigo;
+      },
+      set: function (v) {
+        this.añadirPalabra(v);
+      },
+    },
   },
   methods: {
     ...mapMutations(["añadirPalabra"]),
-    filtrar() {
-      this.añadirPalabra(this.filtro);
-    },
   },
 };
 </script>
